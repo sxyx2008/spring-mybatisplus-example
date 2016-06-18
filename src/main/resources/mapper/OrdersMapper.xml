@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.aimeizi.mapper.OrdersMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id, user_id, number, createtime, note
+	</sql>
+
+	<resultMap id="orderVoResultMap" type="OrdersVo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId"/>
+		<result column="username" property="username"/>
+		<result column="number" property="number"/>
+		<result column="createtime" property="createtime"/>
+		<result column="note" property="note"/>
+		<result column="birthday" property="birthday"/>
+		<result column="sex" property="sex"/>
+		<result column="address" property="address"/>
+		<result column="items_id" property="itemsId"/>
+		<result column="detail_id" property="orderDetailId"/>
+		<result column="items_num" property="itemsNum"/>
+		<result column="name" property="name"/>
+		<result column="price" property="price"/>
+		<result column="detail" property="detail"/>
+	</resultMap>
+
+	<select id="selectOrder" resultMap="orderVoResultMap">
+		SELECT o.*, u.`username`,u.`birthday`,u.`sex`,u.`address`,od.`items_id`,od.`id` detail_id,od.`items_num`,it.name,it.`price`,it.`detail`
+		FROM orders o
+		LEFT JOIN USER u ON o.`user_id`=u.`id`
+		LEFT JOIN `orderdetail`od ON o.`id`=od.`orders_id`
+		LEFT JOIN `items` it ON od.`items_id`=it.`id`
+	</select>
+
+</mapper>
